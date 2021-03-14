@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.order.dao.SysUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sys.order.entity.SysUser">
+    <result column="ID" property="id" />
+        <result column="USER_NAME" property="userName" />
+        <result column="PASSWORD" property="password" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID,
+        USER_NAME, PASSWORD, NICK_NAME
+    </sql>
+
+    <select id="login" resultType="com.sys.order.vo.SysMenuVo">
+        SELECT U.NIKE_NAME,
+               M.*
+        FROM SYS_USER U
+             LEFT JOIN
+             SYS_USER_MENU UM ON
+             U.ID = UM.USER_ID
+             LEFT JOIN
+             SYS_MENU M ON UM.MENU_ID = M.ID
+        ${ew.customSqlSegment}
+    </select>
+
+</mapper>
