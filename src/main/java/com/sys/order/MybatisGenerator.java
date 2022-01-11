@@ -54,16 +54,18 @@ public class MybatisGenerator {
 //        gc.setFileOverride(true); // 是否覆盖已经生成的文件
         // 指定实体字段的时间类型
         gc.setDateType(DateType.ONLY_DATE);
-        gc.setSwagger2(true); // 实体属性 Swagger2 注解
+        gc.setEntityName("%sDO");
+        gc.setServiceName("%sDomainService");
+        gc.setServiceImplName("%sDomainServiceImpl");
+//        gc.setSwagger2(true); // 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://192.168.0.104:3306/orderSystem?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-        // dsc.setSchemaName("public");
+        dsc.setUrl("jdbc:mysql://rm-bp1foe402p295lpmu7o.mysql.rds.aliyuncs.com:3306/digital_expo_dev8?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("Woaini520..");
+        dsc.setUsername("digital_expo_8_dev");
+        dsc.setPassword("K^bd1TLvcTq7dd@^UvgyRg6HH474Dh");
         OracleTypeConvert oracleTypeConvert = new OracleTypeConvert();
         oracleTypeConvert.processTypeConvert(gc, "data");
         dsc.setTypeConvert(oracleTypeConvert);
@@ -72,9 +74,9 @@ public class MybatisGenerator {
         // 包配置
         PackageConfig pc = new PackageConfig();
 //        pc.setModuleName(scanner(""));
-        pc.setParent("com.sys.order");
+        pc.setParent("com.iwhalecloud.digital.expo.saas.recommend");
         pc.setEntity("entity");
-        pc.setMapper("dao");
+        pc.setMapper("mapper");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
@@ -97,7 +99,7 @@ public class MybatisGenerator {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/outFile/mapper/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                return projectPath + "/outFile/mapper/" + tableInfo.getEntityName().replace("DO", "") + "Mapper" + StringPool.DOT_XML;
             }
         });
         /*
@@ -129,21 +131,21 @@ public class MybatisGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityColumns("ID");
-        strategy.setSuperEntityClass("com.sys.order.entity.BaseEntity");
-        strategy.setSuperServiceImplClass("com.sys.order.service.impl.BaseServiceImpl");
-        strategy.setSuperServiceClass("com.sys.order.service.BaseService");
-        strategy.setEntityLombokModel(false);
+//        strategy.setSuperEntityColumns("ID");
+//        strategy.setSuperEntityClass("com.sys.order.entity.BaseEntity");
+        strategy.setSuperServiceImplClass("com.baomidou.mybatisplus.extension.service.impl.ServiceImpl");
+//        strategy.setSuperServiceClass("com.sys.order.service.BaseService");
+        strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 去掉表名前缀
-//        strategy.setTablePrefix("A_");
+//        strategy.setTablePrefix("expo_core");
 
 
 //        strategy.setEntityLombokModel(true);
         // 公共父类
 //        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
 
-        String TableName = "DISHES,ORDER,ORDRE_DISHES,SYS_MENU,SYS_USER";  // 表名
+        String TableName = "recommend_content_top";  // 表名
         // 写于父类中的公共字段
         strategy.setInclude(TableName.split(","));
         strategy.setControllerMappingHyphenStyle(true);

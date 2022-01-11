@@ -43,7 +43,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void placeAnOrder(List<Long> dishesIds) {
         // 计算订单的金额
         BigDecimal all = this.orderPrice(dishesIds);
@@ -151,3 +151,5 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
     }
 
 }
+
+
